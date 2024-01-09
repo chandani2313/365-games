@@ -1,0 +1,24 @@
+variables:
+  GIT_STRATEGY: none
+
+before_script:
+- export PATH=$PATH:/home/ubuntu/.vscode-server-insiders/bin/45999664ef626d6d665cb585104efdcab383a3cd/bin/remote-cli:/home/ubuntu/.nvm/versions/node/v14.19.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+stages:
+  - deploy
+
+deploy_to_staging:
+  stage: deploy
+  script: 
+  - echo "deploying to staging"
+  - whoami
+  - cd /var/www/html/365-games
+  - git pull origin main
+  - npm i
+  - npm run build
+  - sudo service nginx restart
+  tags:
+    - 365-games-staging
+  only:
+    refs:
+    - main
